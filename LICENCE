@@ -1,4 +1,3 @@
-<?php
 /*
  * Banana : The PHP Framework that rocks
  * (c) Régis FLORET 2013 and Later
@@ -21,18 +20,3 @@
  *    otherwise, arising from, out of or in connection with the software or the
  *    use or other dealings in the Software.
  */
-
-/**
- * The controller is the Key
- *
- * @author regis
- */
-class BananaController {
-
-    protected $template;
-
-    public function __construct() {
-        $this->template = new BananaTemplate();
-    }
-
-}

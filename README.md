@@ -1,4 +1,4 @@
-banana
+Banana
 ======
 
 Banana: The PHP framework that rocks
