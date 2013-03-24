@@ -35,6 +35,7 @@ class BananaConfig {
 
     public function __construct() {
         $this->libraryPath = BASE_DIR . 'libs' . DIRECTORY_SEPARATOR; // Default
+        $this->addPath('banana' . DIRECTORY_SEPARATOR . 'models');
     }
 
     static function getInstance() {
@@ -44,12 +45,19 @@ class BananaConfig {
         return BananaConfig::$config;
     }
 
+    /** Add a new path to the php_path
+     * @param string $path The new path to add
+     */
+    public function addPath($path) {
+        set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+    }
+
     /** Add a library in the php_path
      *
      * @param String $name the library name
      */
     public function addLibrary($name) {
-        set_include_path(get_include_path() . PATH_SEPARATOR . $this->libraryPath . $name);
+        $this->addPath($this->libraryPath . $name);
     }
 
     /** Add multiple libraries
