@@ -32,7 +32,7 @@ include_once 'configuration.php';
  * @param String $name The class name
  */
 function __autoload($name) {
-    $dir = './';
+    $dir = '';
 
     if (preg_match('/^Banana/', $name)) {
         $name = str_ireplace('Banana', '', $name);

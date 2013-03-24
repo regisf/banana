@@ -34,7 +34,7 @@ class BananaConfig {
     var $container = [];
 
     public function __construct() {
-
+        $this->libraryPath = BASE_DIR . 'libs' . DIRECTORY_SEPARATOR; // Default
     }
 
     static function getInstance() {
@@ -42,6 +42,24 @@ class BananaConfig {
             BananaConfig::$config = new BananaConfig();
         }
         return BananaConfig::$config;
+    }
+
+    /** Add a library in the php_path
+     *
+     * @param String $name the library name
+     */
+    public function addLibrary($name) {
+        set_include_path(get_include_path() . PATH_SEPARATOR . $this->libraryPath . $name);
+    }
+
+    /** Add multiple libraries
+     *
+     * @param Array $arr The libraries
+     */
+    public function addLibraries($libraries) {
+        foreach($libraries as $lib) {
+            $this->addLibrary($lib);
+        }
     }
 
     public function __set($name, $value) {
@@ -53,5 +71,9 @@ class BananaConfig {
             return $this->container[$name];
         }
         throw new KeyNotExists("The key $name don't exists");
+    }
+
+    public function __isset($name) {
+        return array_key_exists($name, $this->container);
     }
 }

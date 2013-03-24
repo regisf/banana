@@ -42,12 +42,17 @@ class BananaTemplateNotDefined extends Exception {
 class BananaTemplate {
 
     var $content = null;
+    var $templateFile = null;
 
     public function load($file) {
         foreach (BananaConfig::getInstance()->templatesDirectory as $templatesDir) {
             $file = $templatesDir . $file;
             if (file_exists($file)) {
-                $this->content = file_get_contents($file);
+                if (isset(BananaConfig::getInstance()->templateEngine)) {
+                    $this->templateFile = $file;
+                } else {
+                    $this->content = file_get_contents($file);
+                }
                 return $this;
             }
         }
@@ -56,14 +61,13 @@ class BananaTemplate {
     }
 
     public function render($context = []) {
-        if ($this->content === null) {
+        if ($this->content === null && $this->templateFile === null) {
             throw new BananaTemplateNotDefined();
         }
 
         if (isset(BananaConfig::getInstance()->templateEngine)) {
-            return BananaConfig::getInstance()->templateEngine->render($context);
+            return BananaConfig::getInstance()->templateEngine->render($this->templateFile, $context);
         }
-        $context['hello'] = 'Hello world';
 
         ob_start();
         extract($context);

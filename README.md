@@ -4,7 +4,10 @@ Banana
 Banana: The PHP framework that rocks
 
 Banana is in active development for a personal project.
-This is the 0.0.1 version.
+
+It is inspired by Django, Node.js and other frameworks.
+
+This is a very early release do not use it in production. 
 
 Installation
 ------------
