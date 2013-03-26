@@ -8,7 +8,7 @@
 namespace Banana\Model;
 
 /**
- * Description of models
+ * Models is the base class for all database calls.
  *
  * @author regis
  */

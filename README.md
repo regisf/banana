@@ -3,6 +3,11 @@ Banana
 
 Banana: The PHP framework that rocks
 
+Since 5.3 PHP is now functionnal which means we may pass a function as an
+argument.
+
+Banana try to digg this way of development in PHP.
+
 Banana is in active development for a personal project.
 
 It is inspired by Django, Node.js and other frameworks.
@@ -17,7 +22,8 @@ Clone for fork the repos or download the zip. That's all.
 Using
 -----
 
-Create two files: `index.php` and `configuration.php`.
+Banana doesn't work out the box. You have to create two files: `index.php`
+and `configuration.php`.
 
 Example for `index.php`:
 
