@@ -22,17 +22,21 @@
  *    use or other dealings in the Software.
  */
 
+namespace Banana\Core;
+
+use Banana\Template\Template as Template;
+
 /**
  * The controller is the Key
  *
  * @author regis
  */
-class BananaController {
+class Controller {
 
     protected $template;
 
     public function __construct() {
-        $this->template = new BananaTemplate();
+        $this->template = new Template();
     }
 
 }

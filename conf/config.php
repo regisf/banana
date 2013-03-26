@@ -22,14 +22,16 @@
  *    use or other dealings in the Software.
  */
 
-class KeyNotExists extends Exception {}
+namespace Banana\Conf;
+
+class KeyNotExists extends \Exception {}
 
 /**
  * Description of BananaConfigParser
  *
  * @author regis
  */
-class BananaConfig {
+class Config {
     static $config = null;
     var $container = [];
 
@@ -39,10 +41,10 @@ class BananaConfig {
     }
 
     static function getInstance() {
-        if (BananaConfig::$config === null) {
-            BananaConfig::$config = new BananaConfig();
+        if (Config::$config === null) {
+            Config::$config = new Config();
         }
-        return BananaConfig::$config;
+        return Config::$config;
     }
 
     /** Add a new path to the php_path

@@ -22,15 +22,20 @@
  *    use or other dealings in the Software.
  */
 
+namespace Banana\Template;
+
+use Banana\Conf\Config as Config;
+
+
 /** Empty class for type definition
  */
-class BananaTemplateNotFound extends Exception {
+class NotFound extends \Exception {
 
 }
 
 /** Emtpy class for type definition
  */
-class BananaTemplateNotDefined extends Exception {
+class NotDefined extends \Exception {
 
 }
 
@@ -39,16 +44,16 @@ class BananaTemplateNotDefined extends Exception {
  *
  * @author regis
  */
-class BananaTemplate {
+class Template {
 
     var $content = null;
     var $templateFile = null;
 
     public function load($file) {
-        foreach (BananaConfig::getInstance()->templatesDirectory as $templatesDir) {
+        foreach (Config::getInstance()->templatesDirectory as $templatesDir) {
             $file = $templatesDir . $file;
             if (file_exists($file)) {
-                if (isset(BananaConfig::getInstance()->templateEngine)) {
+                if (isset(Config::getInstance()->templateEngine)) {
                     $this->templateFile = $file;
                 } else {
                     $this->content = file_get_contents($file);
@@ -65,8 +70,8 @@ class BananaTemplate {
             throw new BananaTemplateNotDefined();
         }
 
-        if (isset(BananaConfig::getInstance()->templateEngine)) {
-            return BananaConfig::getInstance()->templateEngine->render($this->templateFile, $context);
+        if (isset(Config::getInstance()->templateEngine)) {
+            return Config::getInstance()->templateEngine->render($this->templateFile, $context);
         }
 
         ob_start();

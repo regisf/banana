@@ -22,32 +22,27 @@
  *    use or other dealings in the Software.
  */
 
+namespace Banana\Core;
 /**
- * Description of Router
+ * Description of BananaConfigParser
  *
- * @author Régis FLORET <regis.floret@gmail.com>
+ * @author Regis FLORET
  */
-class BananaRouter {
+class Request {
 
-    var $pathes = [];
+    public $method;
 
-    public function addRoute($path, $func) {
-        if (is_callable($func)) {
-            $this->pathes[$path] = $func;
-        } else {
-            error_log("$path don't have a function as argument. It will be ignored. ");
-        }
-        return $this;
+    public function __construct() {
+
     }
 
-    public function process() {
-        $path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/';
-        foreach (array_keys($this->pathes) as $key) {
-            if (preg_match($key, $path_info)) {
-                echo $this->pathes[$key](new BananaRequest());
-                return;
-            }
-        }
+    public function get($name) {
+
+    }
+
+    public function post($name) {
+
     }
 
 }
+

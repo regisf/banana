@@ -7,7 +7,7 @@ Banana is in active development for a personal project.
 
 It is inspired by Django, Node.js and other frameworks.
 
-This is a very early release do not use it in production. 
+This is a very early release do not use it in production.
 
 Installation
 ------------
@@ -27,7 +27,7 @@ Example for `index.php`:
 
 include_once 'banana/banana.php';
 
-with(new BananaRouter(), function($route) {
+with(new Banana\Core\Router(), function($route) {
     // the url is a regular expression. The closure function must return
     // a string.
     $route->addRoute('/^\/$/', function() {
@@ -46,7 +46,7 @@ Example for `configuration.php`:
 ```php
 <?php
 
-with(BananaConfig::getInstance(), function($conf) {
+with(Banana\Conf\Config::getInstance(), function($conf) {
     $conf->templatesDir = array(
         BASE_DIR . 'templates'
     );
