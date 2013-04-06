@@ -37,7 +37,9 @@ class Config {
 
     public function __construct() {
         $this->libraryPath = BASE_DIR . 'libs' . DIRECTORY_SEPARATOR; // Default
-        $this->addPath('banana' . DIRECTORY_SEPARATOR . 'models');
+        
+        // Remember: PHP is not a _real_ functionnal language
+        $this->cryproModule = function($value) { return crypt($value); };
     }
 
     static function getInstance() {

@@ -13,7 +13,7 @@ namespace Banana\Model;
  * @author regis
  */
 class Models {
-    protected $tableName;
+    protected $tableName; //!
 
     public function __construct() {
         print_r(get_object_vars($this));

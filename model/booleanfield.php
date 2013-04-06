@@ -22,31 +22,15 @@
  *    use or other dealings in the Software.
  */
 
-define('BASE_DIR', getcwd() . DIRECTORY_SEPARATOR);
+namespace Banana\Model;
 
 /**
- * Autoloader. If the namespace starts with Banana, remove it and try to find
- * it in the Banana directory
- * @param String $name The class name
+ * Description of booleanfield
+ *
+ * @author regis
  */
-
-spl_autoload_register(function ($name) {
-    if (preg_match('/^Banana/', $name)) {
-        $name = str_replace('\\', DIRECTORY_SEPARATOR, $name);
-    }
-    require_once(strtolower($name).'.php');
-});
-
-include_once 'configuration.php';
-
-/**
- * With statment  in functionnal programm. This function allow local scope and
- * don't pollute the namespace
- * @param Object $obj The object we works with
- * @param Function $func, the function to call
- */
-function with($obj, $func) {
-    if (is_callable($func)) {
-        $func($obj);
+class Booleanfield {
+    public function __construct($args) {
+        
     }
 }
