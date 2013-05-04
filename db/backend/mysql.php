@@ -35,7 +35,7 @@ class MySQL implements IBackend
 		// FIXME: Handle error
 	}
 	
-	public function tableExists($tableName) {
+	public function tableExists($tableName, $callback=NULL) {
 		$tableList = [];
 		$result = mysqli_query($this->db, "SHOW TABLES");
 		// FIXME : Handle eror
@@ -43,7 +43,39 @@ class MySQL implements IBackend
 		{
 			$tableList[] = $row[0];
 		}
-		
-		return array_key_exists($tableName, $tableList);
+
+		$exists = FALSE;
+		foreach($tableList as $table) {
+			if ($table == $tableName) {
+				$exists = TRUE;
+				break;
+			}
+		}
+
+		if (is_callable($callback)) {
+			$callback($exists, $tableName, $tableList);
+		} else {
+			return $exists;
+		}
 	}
+	
+	public function createTable($tableName, $callback) {
+		mysqli_query($this->db, "CREATE TABLE $tableName ( `id` INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT," . $callback() .')');
+		if (mysqli_errno($this->db)) {
+			return FALSE;
+		}
+		
+		// Create the id index
+		mysqli_query($this->db, 'CREATE INDEX ' . $tableName . "_id_index ON $tableName (`id`)");
+		if (mysqli_errno($this->db)) {
+			return FALSE;
+		}
+
+		return TRUE;
+	}
+	
+	public function getLastErrorMsg() {
+		return mysqli_error($this->db);
+	}
+	
 }

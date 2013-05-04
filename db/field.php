@@ -22,7 +22,7 @@
  *    use or other dealings in the Software.
  */
 
-namespace Banana\Model;
+namespace Banana\Db;
 
 /**
  * Description of field
@@ -30,12 +30,33 @@ namespace Banana\Model;
  * @author regis
  */
 class Field {
-    protected $value = NULL;
-    protected $size;
-    protected $null = FALSE;
+	public $name = '';
+    public $value = NULL;
+    public $size = 0;
+    public $null = FALSE;
+    public $type = '';
+    public $default = '';
+    public $primary_key = FALSE;
     
     public function __construct($args) {
+        if (array_key_exists("size", $args)) {
+        	$this->size = $args['size'];
+        }
+        if (array_key_exists('null', $args)) {
+        	$this->null = $args['null'];
+        }
+        if (array_key_exists('default',$args)) {
+        	$this->default = $args['default'];
+        }
+        if (array_key_exists('primary' , $args)) {
+        	$this->primary_key = TRUE;
+        }
         
+    }
+    
+    public function toString() {
+    	// FIXME: auto_increment
+    	return "`$this->name` $this->type ". ($this->size ? '(' . $this->size . ')' : '') . ($this->null == TRUE ? '' : ' NOT NULL') . ($this->primary_key ? ' PRIMARY KEY AUTO_INCREMENT' : '');
     }
 }
 

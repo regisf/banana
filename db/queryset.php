@@ -22,7 +22,7 @@
  *    use or other dealings in the Software.
  */
 
-namespace Banana\Model;
+namespace Banana\Db;
 /**
  * Description of queryset
  *
@@ -31,5 +31,9 @@ namespace Banana\Model;
 class QuerySet {
     public function __construct() {
         ;
+    }
+    
+    public function isEmpty() {
+    	return TRUE;
     }
 }

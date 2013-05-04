@@ -22,15 +22,16 @@
  *    use or other dealings in the Software.
  */
 
-namespace Banana\Model;
+namespace Banana\Db;
 
 /**
  * Description of booleanfield
  *
  * @author regis
  */
-class Booleanfield {
+class Booleanfield extends Integerfield {
     public function __construct($args) {
-        
+    	$args['size'] = 1;
+        parent::__construct($args);
     }
 }

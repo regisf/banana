@@ -34,7 +34,8 @@ class KeyNotExists extends \Exception {}
 class Config {
     static $config = null;
     var $container = [];
-
+	public $auto_evolve = FALSE;
+	
     public function __construct() {
         $this->libraryPath = BASE_DIR . 'libs' . DIRECTORY_SEPARATOR; // Default
         

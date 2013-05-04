@@ -22,7 +22,7 @@
  *    use or other dealings in the Software.
  */
 
-namespace Banana\Model;
+namespace Banana\Db;
 
 /**
  * Description of emailfield

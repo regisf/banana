@@ -22,7 +22,7 @@
  *    use or other dealings in the Software.
  */
 
-namespace Banana\Model;
+namespace Banana\Db;
 
 /**
  * Description of charfield
@@ -31,7 +31,11 @@ namespace Banana\Model;
  */
 class Charfield  extends Field {
     public function __construct($args) {
-        
+        if ( ! isset($args['size'])) {
+        	$args['size'] = 255;
+        }
+    	parent::__construct($args);
+        $this->type = 'VARCHAR';
     }
     
     public function validate() {

@@ -29,24 +29,12 @@ define('BASE_DIR', getcwd() . DIRECTORY_SEPARATOR);
  * it in the Banana directory
  * @param String $name The class name
  */
-
 spl_autoload_register(function ($name) {
     if (preg_match('/^Banana/', $name)) {
         $name = str_replace('\\', DIRECTORY_SEPARATOR, $name);
     }
-    require_once(strtolower($name).'.php');
+    require_once('./' . strtolower($name) . '.php');
 });
 
+include_once 'Utils/with_statment.php';
 include_once 'configuration.php';
-
-/**
- * With statment  in functionnal programm. This function allow local scope and
- * don't pollute the namespace
- * @param Object $obj The object we works with
- * @param Function $func, the function to call
- */
-function with($obj, $func) {
-    if (is_callable($func)) {
-        $func($obj);
-    }
-}
