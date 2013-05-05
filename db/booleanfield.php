@@ -32,6 +32,6 @@ namespace Banana\Db;
 class Booleanfield extends Integerfield {
     public function __construct($args) {
     	$args['size'] = 1;
-        parent::__construct($args);
+        parent::__construct($args, "shortint");
     }
 }
