@@ -32,7 +32,6 @@ use Banana\Template\Template as Template;
  * @author regis
  */
 class Controller {
-
     protected $template;
 
     public function __construct() {

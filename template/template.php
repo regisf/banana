@@ -72,14 +72,14 @@ class Template {
 
         if (isset(Config::getInstance()->templateEngine)) {
             return Config::getInstance()->templateEngine->render($this->templateFile, $context);
+        } else {
+            ob_start();
+            extract($context);
+            eval("?>$this->content");
+            $buffer = ob_get_contents();
+            ob_clean();
+            return $buffer;
         }
-
-        ob_start();
-        extract($context);
-        eval("?>$this->content");
-        $buffer = ob_get_contents();
-        ob_clean();
-        return $buffer;
     }
 
 }

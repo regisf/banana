@@ -1,6 +1,6 @@
 <?php
 /*
- * Banana : The PHP Framework that rocks
+ * Banana : The PHP Framework that taste good
  * (c) Régis FLORET 2013 and Later
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,20 +26,41 @@ namespace Banana\Template;
 
 include_once('smarty3/Smarty.class.php');
 
-function smarty_url($name) {
-
-}
+class SmartyURLException extends \Exception  {}
 
 class Smarty_Engine implements ITemplate_Engine {
     private $smarty;
+    private $helpers = [
+        'url' => '\Banana\Template\get_url'
+    ];
 
     public function __construct() {
         $this->smarty = new \Smarty();
+        $this->installPlugins();
         // TODO: Here cache stuff and directory stuff
+    }
+
+    private function installPlugins() {
+        foreach($this->helpers as $key => $func) {
+            $this->smarty->registerPlugin('function', $key, $func);
+        }
     }
 
 	public function render($templateFile, $context) {
 		$this->smarty->assign($context);
         return $this->smarty->display($templateFile);
 	}
+}
+
+function get_url($params, $content) {
+    $namedUrl = NULL;
+    if (array_key_exists('name', $params)) {
+        if (\Banana\Core\Router::getInstance()->haveNamedRoute($params['name'])) {
+            $namedUrl = (\Banana\Conf\Config::getInstance()->use_rewrite === TRUE ? '' : '/index.php') . \Banana\Core\Router::getInstance()->getPathForName($params['name']);
+        }
+    }
+    if ($namedUrl == NULL) {
+        throw new SmartyURLException('URL "' .  $params['name'] . '" not found');
+    }
+    return $namedUrl;
 }

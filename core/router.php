@@ -25,13 +25,21 @@
 namespace Banana\Core;
 
 /**
- * Description of Router
+ * A router is a glue between path and closure function.
  *
  * @author Régis FLORET <regis.floret@gmail.com>
  */
 class Router {
+    public static $instance = NULL;
 
     var $pathes = [];
+
+    public static function getInstance() {
+        if (Router::$instance === NULL) {
+            Router::$instance = new Router();
+        }
+        return Router::$instance;
+    }
 
     public function addRoute($path, $func) {
         if (is_callable($func)) {
@@ -42,14 +50,53 @@ class Router {
         return $this;
     }
 
+    public function addNamedRoute($path, $name, $func) {
+        if (is_callable($func)) {
+            $this->pathes[$path] = [ 'name' => $name, 'function' => $func ];
+        } else {
+            error_log("$path don't have a function as arguement. It will be ignored");
+        }
+        return $this;
+    }
+
+    public function getNamedRoute($name) {
+        foreach ($this->pathes as $key => $value) {
+            if (is_array($value)) {
+                if ($name == $value['name']) {
+                    return [ 'path' => $key, 'name' => $value['name'], 'function' => $value['function'] ];
+                }
+            }
+        }
+        return NULL;
+    }
+
+    public function getPathForName($name) {
+        $route = $this->getNamedRoute($name);
+        $path =  str_replace(array('\\', '^', '$'),'',$route['path']);
+        while (preg_match('#\/\/#', $path)) {
+            $path = preg_replace('#\/\/#', '/', $path);
+        }
+        return $path;
+    }
+
+    public function haveNamedRoute($name) {
+        return $this->getNamedRoute($name) !== NULL;
+    }
+
     public function process() {
         $path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/';
         foreach (array_keys($this->pathes) as $key) {
             if (preg_match($key, $path_info)) {
-                echo $this->pathes[$key](new Request());
+                if (is_array($this->pathes[$key])) {
+                    echo $this->pathes[$key]['function'](new Request());
+                } else {
+                    echo $this->pathes[$key](new Request());
+                }
                 return;
             }
         }
+        // TODO: Better way for 404
+        die("$path_info is not found in the URLs");
     }
 
 }
