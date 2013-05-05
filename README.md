@@ -1,7 +1,7 @@
 Banana
 ======
 
-Banana: The PHP framework that rocks
+Banana: The PHP framework that taste good
 
 Since 5.3 PHP is now functionnal which means we may pass a function as an
 argument.

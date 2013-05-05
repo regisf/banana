@@ -1,6 +1,6 @@
 <?php
 /*
- * Banana : The PHP Framework that rocks
+ * Banana : The PHP Framework that taste good
  * (c) Régis FLORET 2013 and Later
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
