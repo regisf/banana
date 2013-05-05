@@ -26,32 +26,63 @@ namespace Banana\Template;
 
 include_once('smarty3/Smarty.class.php');
 
+/**
+ * Exception when a named URL was not found
+ */
 class SmartyURLException extends \Exception  {}
 
+/**
+ * Smarty template engine support.
+ */
 class Smarty_Engine implements ITemplate_Engine {
     private $smarty;
+    // Plugins are defined here. Don't forget the namespace
     private $helpers = [
         'url' => '\Banana\Template\get_url'
     ];
 
+    /**
+     * Constructor.
+     * Create the smarty engine and install plugins, modifier, and manage configuration
+     */
     public function __construct() {
         $this->smarty = new \Smarty();
         $this->installPlugins();
         // TODO: Here cache stuff and directory stuff
     }
 
+    /**
+     * Install all plugins.
+     * @todo Add plugins defined in configuration
+     */
     private function installPlugins() {
         foreach($this->helpers as $key => $func) {
             $this->smarty->registerPlugin('function', $key, $func);
         }
     }
 
+    /**
+     * Render the template
+     * @param String $templateFile The template file in the template directory
+     * @param Array $contet The array for variable for the template
+     * @return String The rendered page
+     */
 	public function render($templateFile, $context) {
 		$this->smarty->assign($context);
         return $this->smarty->display($templateFile);
 	}
 }
 
+/**
+ * Smarty plugin for named URL.
+ * <code>
+ * {url name=the_url_name}
+ * </code>
+ * will display the url
+ * @param Array $params The parameters list
+ * @param String $content
+ * @return String The URL
+ */
 function get_url($params, $content) {
     $namedUrl = NULL;
     if (array_key_exists('name', $params)) {

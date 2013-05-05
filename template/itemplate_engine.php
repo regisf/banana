@@ -24,6 +24,15 @@
 
 namespace Banana\Template;
 
+/**
+ * Interface for a template engine
+ */
 interface ITemplate_Engine {
+    /**
+     * Render the template
+     * @param String $templateFile The template file in the template directory
+     * @param Array $contet The array for variable for the template
+     * @return String The rendered page
+     */
 	public function render($templateFile, $context);
 }

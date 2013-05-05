@@ -29,15 +29,9 @@ use Banana\Conf\Config as Config;
 
 /** Empty class for type definition
  */
-class NotFound extends \Exception {
+class NotFound extends \Exception {}
+class EngineNotSet extends \Exception {}
 
-}
-
-/** Emtpy class for type definition
- */
-class NotDefined extends \Exception {
-
-}
 
 /**
  * Description of template
@@ -45,41 +39,31 @@ class NotDefined extends \Exception {
  * @author regis
  */
 class Template {
-
-    var $content = null;
     var $templateFile = null;
 
     public function load($file) {
         foreach (Config::getInstance()->templatesDirectory as $templatesDir) {
             $file = $templatesDir . $file;
             if (file_exists($file)) {
-                if (isset(Config::getInstance()->templateEngine)) {
-                    $this->templateFile = $file;
-                } else {
-                    $this->content = file_get_contents($file);
-                }
+                $this->templateFile = $file;
                 return $this;
             }
         }
 
-        throw new BananaTemplateNotFound("The template '$file' was not found");
+        throw new Banana\Template\NotFound("The template '$file' was not found");
     }
 
     public function render($context = []) {
-        if ($this->content === null && $this->templateFile === null) {
-            throw new BananaTemplateNotDefined();
+        if ($this->templateFile === null) {
+            throw new \Banana\Template\NotDefined();
         }
 
         if (isset(Config::getInstance()->templateEngine)) {
-            return Config::getInstance()->templateEngine->render($this->templateFile, $context);
-        } else {
-            ob_start();
-            extract($context);
-            eval("?>$this->content");
-            $buffer = ob_get_contents();
-            ob_clean();
-            return $buffer;
+            Config::getInstance()->templateEngine->render($this->templateFile, $context);
+            return;
         }
+
+        throw new Banana\Template\EngineNotSet('The template engine is not set');
     }
 
 }
