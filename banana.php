@@ -32,8 +32,8 @@ define('BASE_DIR', getcwd() . DIRECTORY_SEPARATOR);
 spl_autoload_register(function ($name) {
     if (preg_match('/^Banana/', $name)) {
         $name = str_replace('\\', DIRECTORY_SEPARATOR, $name);
+        require_once('./' . strtolower($name) . '.php');
     }
-    require_once('./' . strtolower($name) . '.php');
 });
 
 include_once 'Utils/with_statment.php';
