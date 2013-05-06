@@ -36,5 +36,32 @@ spl_autoload_register(function ($name) {
     }
 });
 
+/**
+ * Singleton to get the database backend
+ * @return Backend A backend object
+ */
+function getBackend() {
+	static $db = NULL;
+
+	if ($db == NULL) {
+		$database = \Banana\Conf\Config::getInstance()->database;
+		$engine = "\\Banana\\Db\\Backend\\" . $database['backend'];
+		$db = new $engine($database['host'], $database['user'], $database['password'], $database['database']);
+	}
+	return $db;
+}
+
 include_once 'Utils/with_statment.php';
 include_once 'configuration.php';
+
+/*
+ * Ensure minimal tables exists
+ */
+if (\Banana\Conf\Config::getInstance()->auto_evolve) {
+    getBackend()->tableExists(\Banana\Model\SessionModel::SessionTableName, function($exists, $tableName, $tableList) {
+        if ( ! $exists) {
+            new \Banana\Model\AuthUserModel();
+            new \Banana\Model\SessionModel();
+        }
+    });
+}

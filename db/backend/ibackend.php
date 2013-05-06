@@ -34,4 +34,6 @@ interface IBackend
 	public function __construct($host, $user, $password, $database);
 	public function tableExists($tableName, $callback=NULL);
 	public function createTable($tableName, $callback);
+	public function pushAfter($what);
+
 }

@@ -88,9 +88,9 @@ class Router {
         foreach (array_keys($this->pathes) as $key) {
             if (preg_match($key, $path_info)) {
                 if (is_array($this->pathes[$key])) {
-                    echo $this->pathes[$key]['function'](new Request());
+                    echo $this->pathes[$key]['function'](new \Banana\Core\Request());
                 } else {
-                    echo $this->pathes[$key](new Request());
+                    echo $this->pathes[$key](new \Banana\Core\Request());
                 }
                 return;
             }

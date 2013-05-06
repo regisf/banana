@@ -37,6 +37,8 @@ class Field {
     public $type = '';
     public $default = '';
     public $primary_key = FALSE;
+
+	private $after = array();
     
     public function __construct($args) {
         if (array_key_exists("size", $args)) {
@@ -58,5 +60,17 @@ class Field {
     	// FIXME: auto_increment
     	return "`$this->name` $this->type ". ($this->size ? '(' . $this->size . ')' : '') . ($this->null == TRUE ? '' : ' NOT NULL') . ($this->primary_key ? ' PRIMARY KEY AUTO_INCREMENT' : '');
     }
+
+	public function pushAfter($what) {
+		$this->after[] = $what;
+	}
+
+	public function haveAfter() {
+		return count($this->after) > 0;
+	}
+
+	public function getAfter() {
+		return join(',', $this->after);
+	}
 }
 

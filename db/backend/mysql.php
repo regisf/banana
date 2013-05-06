@@ -28,6 +28,7 @@ namespace Banana\Db\Backend;
 class MySQL implements IBackend
 {
 	private $db;
+	private $after = array();
 	
 	public function __construct($host, $user, $password, $database) {
 		$this->db = mysqli_connect($host, $password, $database);
@@ -60,7 +61,8 @@ class MySQL implements IBackend
 	}
 	
 	public function createTable($tableName, $callback) {
-		mysqli_query($this->db, "CREATE TABLE $tableName ( `id` INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT," . $callback() .')');
+		//echo("CREATE TABLE `$tableName` ( `id` INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT," . $callback($this) . (count($this->after) > 0 ? ', ' : ' ') . join(',', $this->after) .  ')');die();
+		mysqli_query($this->db, "CREATE TABLE $tableName ( `id` INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT," . $callback($this) . (count($this->after) > 0 ? ', ' : ' ') . join(',', $this->after) .  ')');
 		if (mysqli_errno($this->db)) {
 			return FALSE;
 		}
@@ -78,4 +80,7 @@ class MySQL implements IBackend
 		return mysqli_error($this->db);
 	}
 	
+	public function pushAfter($what) {
+		$this->after[] = $what;
+	}
 }

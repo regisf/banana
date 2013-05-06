@@ -25,6 +25,7 @@
 namespace Banana\Core;
 
 use Banana\Template\Template as Template;
+use Banana\Model as Model;
 
 /**
  * The controller is the Key
@@ -33,8 +34,14 @@ use Banana\Template\Template as Template;
  */
 class Controller {
     protected $template;
+    private $user;
 
     public function __construct() {
+        if (array_key_exists('sessionid', $_COOKIE)) {
+            $sess = new Model\SessionModel($_COOKIE['sessionid']);
+        } else {
+            $sess = new Model\SessionModel();
+        }
         $this->template = new Template();
     }
 

@@ -29,20 +29,65 @@ namespace Banana\Core;
  * @author Regis FLORET
  */
 class Request {
+    private $post_container = [];
+    private $get_container = [];
+    private $method;
 
-    public $method;
+    const POST = 0;
+    const GET = 1;
+    const PUT = 2;
+    const DELETE = 3;
 
     public function __construct() {
+        if (isset($_POST)) {
+            $POST = filter_var_array($_POST, FILTER_SANITIZE_STRING);
+            foreach ($POST as $key => $value ) {
+                $this->post_container[$key] = $value;
+            }
+            $this->method == Request::POST;
+        } else if (isset($_GET)) {
+            $GET = filter_var_array($_GET, FILTER_SANITIZE_STRING);
+            foreach ($GET as $key => $value ) {
+                $this->get_container[$key] = $value;
+            }
+            $this->method == Request::GET;
+        }
+    }
+
+    public function isPost() {
+        return $this->method == Request::POST;
+    }
+
+    public function isGet() {
+        return $this->method == Request::GET;
+    }
+
+    public function isPut() {
+        return $this->method == Request::PUT;
+    }
+
+    public function isDelete() {
+        return $this->method == Request::DELETE;
+   }
+
+    public function isAjax() {
 
     }
 
-    public function get($name) {
+    public function get($name, $default=NULL) {
 
     }
 
-    public function post($name) {
+    public function post($name, $default=NULL) {
 
     }
 
+    public function put($name, $default=NULL) {
+
+    }
+
+    public function delete($name, $default=NULL) {
+
+    }
 }
 
