@@ -41,25 +41,25 @@ class Models {
     	$this->backend = getBackend();
 
     	if (Config::getInstance()->auto_evolve === TRUE) {
-    		$me = $this;
-    		$this->backend->tableExists($this->tableName, function($exists, $tableName, $tableList) use ($me) {
-    			if ( ! $exists) {
-	    			$me->backend->createTable($tableName, function($sender) use ($me) {
-	    				$fields = [];
-				        foreach ($me as $var => $field) {
-				        	if ($field instanceof Field) {
-				        		$field->name = $var;
-				         		$fields[] = $field->toString();
-								if ($field->haveAfter()) {
-									$sender->pushAfter(sprintf($field->getAfter(), $field->name));
-								}
-				         		// TODO: index on field
-				        	}
-				        }
-				        return join(",\n", $fields);
-	    			}) or die("Error : ". $me->backend->getLastErrorMsg());
-    			}
-    		});
+	    $me = $this;
+	    $this->backend->tableExists($this->tableName, function($exists, $tableName, $tableList) use ($me) {
+		if ( ! $exists) {
+		    $me->backend->createTable($tableName, function($sender) use ($me) {
+			$fields = [];
+			foreach ($me as $var => $field) {
+			    if ($field instanceof Field) {
+				$field->name = $var;
+				$fields[] = $field->toString();
+				    if ($field->haveAfter()) {
+					$sender->pushAfter(sprintf($field->getAfter(), $field->name));
+				    }
+				// TODO: index on field
+			    }
+			}
+			return join(",\n", $fields);
+		    }) or die("Error : ". $me->backend->getLastErrorMsg());
+		}
+	    });
     	}
 
     	// Create the ID 

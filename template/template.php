@@ -50,7 +50,7 @@ class Template {
             }
         }
 
-        throw new Banana\Template\NotFound("The template '$file' was not found");
+        throw new NotFound("The template '$file' was not found");
     }
 
     public function render($context = []) {
@@ -63,7 +63,7 @@ class Template {
             return;
         }
 
-        throw new Banana\Template\EngineNotSet('The template engine is not set');
+        throw new EngineNotSet('The template engine is not set');
     }
 
 }

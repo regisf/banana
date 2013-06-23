@@ -34,8 +34,8 @@ class KeyNotExists extends \Exception {}
 class Config {
     static $config = null;
     var $container = [];
-	public $auto_evolve = FALSE;
-	public $templatesDirectory = [];
+    public $auto_evolve = false;
+    public $templatesDirectory = [];
 	
     public function __construct() {
         $this->libraryPath = BASE_DIR . 'libs' . DIRECTORY_SEPARATOR; // Default
@@ -84,7 +84,7 @@ class Config {
         if (array_key_exists($name, $this->container)) {
             return $this->container[$name];
         }
-        throw new KeyNotExists("The key $name don't exists");
+        return false;
     }
 
     public function __isset($name) {

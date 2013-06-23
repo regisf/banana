@@ -24,50 +24,70 @@
 
 namespace Banana\Core;
 
+
 /**
  * A router is a glue between path and closure function.
  *
  * @author Régis FLORET <regis.floret@gmail.com>
  */
 class Router {
-    public static $instance = NULL;
-
+    public static $instance = null;
     var $pathes = [];
 
+    /** Force singleton */
+    public function __construct() {
+        if (Router::$instance != null) {
+            return Router::$instance;
+        }
+    }
+    
+    /**
+     * Static method to return a singleton (Yes I know, it's bad)
+     * @return \Banana\Core\Router The router object
+     */
     public static function getInstance() {
-        if (Router::$instance === NULL) {
+        if (Router::$instance === null) {
             Router::$instance = new Router();
         }
         return Router::$instance;
     }
-
-    public function addRoute($path, $func) {
-        if (is_callable($func)) {
-            $this->pathes[$path] = $func;
-        } else {
-            error_log("$path don't have a function as argument. It will be ignored. ");
-        }
-        return $this;
+    
+    
+    /** Declare URL handled by a object
+     * @param \Banana\Core\Controller A controller object
+     * @return \Banana\Core\ControllerHandler
+     */
+    public function with ($objName) {
+        return new ControllerHandler($objName, $this);
     }
-
-    public function addNamedRoute($path, $name, $func) {
-        if (is_callable($func)) {
-            $this->pathes[$path] = [ 'name' => $name, 'function' => $func ];
-        } else {
-            error_log("$path don't have a function as arguement. It will be ignored");
-        }
-        return $this;
+    
+    /** Add a route
+     * @param String $url The url in regex format
+     * @param String $controller The controller
+     * @param String $method The method
+     */
+    public function addRoute($url, $controller, $method) {
+        $this->pathes[$url] = ['controller' =>$controller, 'method' => $method ];
     }
-
+    
+    /** Add a named route for the URL
+     */
+    public function addNamedRoute($name, $url, $controller, $method) {
+        $this->pathes[$url] = ['controller' =>$controller, 'method' => $method, 'name' => $name ];
+    }
+    
     public function getNamedRoute($name) {
         foreach ($this->pathes as $key => $value) {
             if (is_array($value)) {
-                if ($name == $value['name']) {
-                    return [ 'path' => $key, 'name' => $value['name'], 'function' => $value['function'] ];
+                if (array_key_exists('name', $value)) {
+                    if ($name == $value['name']) {
+                        $key = preg_replace('[\#|\^|\$]', '', $key);
+                        return [ 'path' => $key, 'name' => $value['name'], 'function' => $value['method'] ];
+                    }
                 }
             }
         }
-        return NULL;
+        return null;
     }
 
     public function getPathForName($name) {
@@ -80,23 +100,20 @@ class Router {
     }
 
     public function haveNamedRoute($name) {
-        return $this->getNamedRoute($name) !== NULL;
+        return $this->getNamedRoute($name) !== null;
     }
 
     public function process() {
         $path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/';
         foreach (array_keys($this->pathes) as $key) {
             if (preg_match($key, $path_info)) {
-                if (is_array($this->pathes[$key])) {
-                    echo $this->pathes[$key]['function'](new \Banana\Core\Request());
-                } else {
-                    echo $this->pathes[$key](new \Banana\Core\Request());
-                }
+                $controller = new $this->pathes[$key]['controller'];
+                $method = $this->pathes[$key]['method'];
+                echo $controller->$method(new \Banana\Core\Request());
                 return;
             }
         }
         // TODO: Better way for 404
         die("$path_info is not found in the URLs");
     }
-
 }

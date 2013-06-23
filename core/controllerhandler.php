@@ -1,7 +1,7 @@
 <?php
 /*
  * Banana : The PHP Framework that tastes good
- * (c) RÃ©gis FLORET 2013 and Later
+ * (c) Régis FLORET 2013 and Later
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,38 +22,26 @@
  *    use or other dealings in the Software.
  */
 
-namespace Banana\Db;
+namespace Banana\Core;
+
 /**
- * Description of queryset
- *
- * @author regis
  */
-class QuerySet {
-    public function __construct() {
-        ;
+class ControllerHandler {
+    private $router;
+    private $controller;
+    
+    public function __construct($controller, $router) {
+        $this->router = $router;
+        $this->controller = $controller;
     }
     
-    public function isEmpty() {
-    	return TRUE;
+    public function addRoute($url, $method) {
+        $this->router->addRoute($url, $this->controller, $method);
+        return $this;
     }
-    
-    /** WHERE statment
-     */
-    public function where($args=[]) {
-	
+
+    public function addNamedRoute($name, $url, $method) {
+        $this->router->addNamedRoute($name, $url, $this->controller, $method);
+        return $this;
     }
-    
-    public function get($onfail=false, $cb=null) {
-	if ($cb) {
-	    $cb($result);
-	    return;
-	}
-	return $result;
-    }
-    
-    public function commit($cb=null) {
-	if ($cb) {
-	    $cb($result);
-	}
-    }    
 }

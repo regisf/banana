@@ -33,12 +33,14 @@ Example for `index.php`:
 
 include_once 'banana/banana.php';
 
-with(new Banana\Core\Router(), function($route) {
+use Banana\Core\Router;
+
+with(Router::getInstance(), function($route) {
     // the url is a regular expression. The closure function must return
     // a string.
-    $route->addRoute('/^\/$/', function() {
-        return 'Hello world !!';
-    });
+    $route->with('MainController')                          // With the main controller
+        ->addRoute('#^/$#', 'index' )                       // Call the index method
+        ->addNamedRoute('aroute', '#^/aroute/$', 'aroute'); // Call the aroute method.
 
     // Do the job
     $route->process();

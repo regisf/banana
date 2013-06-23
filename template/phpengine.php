@@ -22,38 +22,34 @@
  *    use or other dealings in the Software.
  */
 
-namespace Banana\Db;
+namespace Banana\Template;
+
 /**
- * Description of queryset
- *
- * @author regis
+ * It seems a little bit weird to implement a PHP template engine with PHP itself
+ * Here for consistency
  */
-class QuerySet {
+class PHPEngine implements ITemplateEngine {
     public function __construct() {
-        ;
+        foreach(\Banana\Conf\Config::getInstance()->templatesDirectory as $dir) {
+            set_include_path($dir);
+        }
     }
-    
-    public function isEmpty() {
-    	return TRUE;
-    }
-    
-    /** WHERE statment
+
+    /**
+     * Render the template
+     * @param String $templateFile The template file in the template directory
+     * @param Array $contet The array for variable for the template
+     * @return String The rendered page
      */
-    public function where($args=[]) {
-	
+	public function render($templateFile, $context) {
+        $content = file_get_contents($templateFile);
+        ob_start();
+        extract($context);
+        eval("?>$content");
+        $buffer = ob_get_contents();
+        ob_clean();
+        echo $buffer;
     }
-    
-    public function get($onfail=false, $cb=null) {
-	if ($cb) {
-	    $cb($result);
-	    return;
-	}
-	return $result;
-    }
-    
-    public function commit($cb=null) {
-	if ($cb) {
-	    $cb($result);
-	}
-    }    
+
 }
+

@@ -1,7 +1,7 @@
 <?php
 /*
  * Banana : The PHP Framework that tastes good
- * (c) RÃ©gis FLORET 2013 and Later
+ * (c) Régis FLORET 2013 and Later
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,38 +22,51 @@
  *    use or other dealings in the Software.
  */
 
-namespace Banana\Db;
-/**
- * Description of queryset
- *
- * @author regis
+namespace Banana\Core;
+
+/** Signal Manager
  */
-class QuerySet {
-    public function __construct() {
-        ;
+class SignalManager
+{
+    public static $inst = null;
+    
+    function __construct()
+    {
+        if (SignalManager::$inst != null)
+        {
+            return SignalManager::$inst;
+        }
     }
     
-    public function isEmpty() {
-    	return TRUE;
+    public static function getInstance()
+    {
+        if (SignalManager::$inst == null)
+        {
+            SignalManager::$inst = new SignalManager();
+        }
+        return SignalManager::$inst;
+    }
+}
+
+/**
+ * Connect a signal to a function.
+ * @param String $signal The signal name
+ * @param 
+ */
+function connectToSignal($signal, $func)
+{
+    if (is_array($func))
+    {
+        
     }
     
-    /** WHERE statment
-     */
-    public function where($args=[]) {
-	
+    if (is_string($func))
+    {
+        
     }
     
-    public function get($onfail=false, $cb=null) {
-	if ($cb) {
-	    $cb($result);
-	    return;
-	}
-	return $result;
+    if (is_callable($func))
+    {
+        
     }
-    
-    public function commit($cb=null) {
-	if ($cb) {
-	    $cb($result);
-	}
-    }    
 }
