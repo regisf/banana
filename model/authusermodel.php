@@ -32,7 +32,7 @@ use \Banana\Db;
  * @author regis
  */
 class AuthUserModel extends Db\Models {
-    protected $tableName = 'auth_user';
+    protected $tableName = 'authuser';
 
     public $username;
     public $password;
@@ -48,7 +48,7 @@ class AuthUserModel extends Db\Models {
         $this->firstname = new Db\Charfield(array('size' => 140, 'null' => TRUE));
         $this->lastname = new Db\Charfield(array('size' => 140, 'null' => TRUE));
         $this->isadmin = new Db\Booleanfield(array('default' => FALSE));
-        
+
         parent::__construct();
     }
 

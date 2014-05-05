@@ -24,7 +24,9 @@
 
 namespace Banana\Template;
 
-include_once(BANANA_DIR . 'libs/smarty3/Smarty.class.php');
+use \Banana\Conf\Config;
+
+include_once(BANANA_DIR . DIRECTORY_SEPARATOR . 'libs'. DIRECTORY_SEPARATOR .'smarty3' . DIRECTORY_SEPARATOR . 'Smarty.class.php');
 
 /**
  * Exception when a named URL was not found
@@ -49,6 +51,7 @@ class SmartyEngine implements ITemplateEngine {
         $this->smarty = new \Smarty();
         //$this->installPlugins();
         // TODO: Here cache stuff and directory stuff
+	$this->smarty->setTemplateDir(Config::getInstance()->templatesDirectory);
     }
 
     /**
@@ -71,7 +74,7 @@ class SmartyEngine implements ITemplateEngine {
 	$this->smarty->assign($context);
 	return $this->smarty->display($templateFile);
     }
-    
+
     /**
      * Add a plugin dir
      */

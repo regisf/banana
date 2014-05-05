@@ -23,8 +23,10 @@
  */
 
 namespace Banana\Core;
+
 /**
- * Description of BananaConfigParser
+ * The request class contains all informations from global super variable
+ * but securized.
  *
  * @author Regis FLORET
  */
@@ -39,13 +41,13 @@ class Request {
     const DELETE = 3;
 
     public function __construct() {
-        if (isset($_POST)) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $POST = filter_var_array($_POST, FILTER_SANITIZE_STRING);
             foreach ($POST as $key => $value ) {
                 $this->post_container[$key] = $value;
             }
             $this->method == Request::POST;
-        } else if (isset($_GET)) {
+        } else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $GET = filter_var_array($_GET, FILTER_SANITIZE_STRING);
             foreach ($GET as $key => $value ) {
                 $this->get_container[$key] = $value;

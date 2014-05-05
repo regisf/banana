@@ -43,7 +43,7 @@ class Template {
 
     public function load($file) {
         foreach (Config::getInstance()->templatesDirectory as $templatesDir) {
-            $file = $templatesDir . $file;
+            $file = $templatesDir . DIRECTORY_SEPARATOR . $file;
             if (file_exists($file)) {
                 $this->templateFile = $file;
                 return $this;

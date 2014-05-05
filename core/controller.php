@@ -24,8 +24,8 @@
 
 namespace Banana\Core;
 
-use Banana\Template\Template as Template;
-use Banana\Model as Model;
+use Banana\Template\Template;
+use Banana\Model;
 
 /**
  * The controller is the Key

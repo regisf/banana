@@ -37,12 +37,14 @@ class Config {
     public $auto_evolve = false;
     public $templatesDirectory = [];
 	
-    public function __construct() {
+    protected function __construct() {
         $this->libraryPath = BASE_DIR . 'libs' . DIRECTORY_SEPARATOR; // Default
         
         // Remember: PHP is not a _real_ functionnal language
         $this->cryproModule = function($value) { return crypt($value); };
     }
+    
+    protected function __clone() {}
 
     static function getInstance() {
         if (Config::$config === null) {
@@ -55,7 +57,7 @@ class Config {
      * @param string $path The new path to add
      */
     public function addPath($path) {
-        set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+        set_include_path($path . PATH_SEPARATOR . get_include_path() );
     }
 
     /** Add a library in the php_path

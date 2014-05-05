@@ -25,7 +25,7 @@
 
 namespace Banana\Db;
 
-use \Banana\Conf\Config as Config;
+use \Banana\Conf\Config;
 
 /**
  * Models is the base class for all database calls.
@@ -36,8 +36,12 @@ class Models {
     protected $tableName; //!
     private $backend;
     public $id;
-    
+
     public function __construct() {
+	if ( ! isset($this->tableName)) {
+	    throw new \Exception('Table name is not set');
+	}
+
     	$this->backend = getBackend();
 
     	if (Config::getInstance()->auto_evolve === TRUE) {
@@ -62,9 +66,9 @@ class Models {
 	    });
     	}
 
-    	// Create the ID 
+    	// Create the ID
     	$this->id = new Integerfield(['null' => FALSE, 'primary' => TRUE]);
-    	
+
     }
 
     /** Find a element in the database
@@ -74,11 +78,11 @@ class Models {
      */
     public function find($args, $callback=null) {
         $result = [];
-        
+
         if (is_callable($callback)) {
             return $callback(TRUE, $result);
         }
-     
+
         return new QuerySet();
     }
 

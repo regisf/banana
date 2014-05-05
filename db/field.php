@@ -57,8 +57,10 @@ class Field {
     }
     
     public function toString() {
-    	// FIXME: auto_increment
-    	return "`$this->name` $this->type ". ($this->size ? '(' . $this->size . ')' : '') . ($this->null == TRUE ? '' : ' NOT NULL') . ($this->primary_key ? ' PRIMARY KEY AUTO_INCREMENT' : '');
+    	// FIXME: auto_increment only with MySQL
+    	return "`$this->name` $this->type " . ($this->size ? '(' . $this->size . ')' : '') . 
+			    ($this->null == TRUE ? '' : ' NOT NULL') . 
+				($this->primary_key ? ' PRIMARY KEY AUTO_INCREMENT' : '');
     }
 
 	public function pushAfter($what) {
